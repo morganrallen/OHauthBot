@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script>
+      var output;
+      function doAuth() {
+        output.innerHTML = "";
+        var xhr = new XMLHttpRequest;
+        xhr.open("GET", "/auth?username=" + document.getElementById("username").value, true);
+        xhr.onreadystatechange = function() {
+            output.innerHTML = xhr.responseText;
+        };
+        xhr.send();
+      }
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>Don't care to know what a Twitter is?</li>
+      <li>A little to social for Facebook?</li>
+      <li>Think it's a little early to say if this "EMail" thing is going to catch on?</li>
+    </ul>
+    <p>
+      User account auth with IRC!
+    </p>
+    <p>
+      Enter you Freenode.net IRC name to authenticate
+    </p>
+    <div><input id="username" name="username" /></div>
+    <div><input type="submit" onclick="javascript:doAuth();"/></div>
+    <div id="output"></div>
+    <script>
+      output = document.getElementById("output");
+    </script>
+  </body>
+</html>
+

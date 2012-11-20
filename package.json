@@ -1,0 +1,12 @@
+{
+  "name": "OHauthBor",
+  "description": "(Not quite) Like OAuth but with IRC",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "irc": "*"
+  }
+}
