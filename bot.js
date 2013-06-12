@@ -13,7 +13,7 @@ module.exports = function(config) {
       var idented = parseInt(message.pop(), 10);
       var username = message.shift();
       if(idented !== 3) {
-        responseQueue[username]({msg: "Not Identified"}, null);
+        responseQueue[username](JSON.stringify({msg: "Not Identified"}), null);
         delete responseQueue[username];
       } else {
         client.whois(username, function(info) {
@@ -30,10 +30,19 @@ module.exports = function(config) {
 
   var queue = [];
 
+  function tryAuth(username, cb) {
+    if(!connected) {
+      return queue.push([username, cb]);
+    }
+
+    responseQueue[username] = cb;
+    client.say("nickserv", "ACC " + username);
+  };
+
   client.addListener("registered", function(message) {
     connected = true;
     while(queue.length > 0) {
-      module.exports.tryAuth.apply(module, queue.pop());
+      tryAuth.apply(module, queue.pop());
     };
   });
 
@@ -41,13 +50,6 @@ module.exports = function(config) {
     sendLink: function(username, url) {
       client.say(username, "Visit URL to continue login. " + url);
     },
-    tryAuth: function(username, cb) {
-      if(!connected) {
-        return queue.push([username, cb]);
-      }
-
-      responseQueue[username] = cb;
-      client.say("nickserv", "ACC " + username);
-    }
+    tryAuth: tryAuth
   };
 }
